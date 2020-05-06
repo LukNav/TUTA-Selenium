@@ -18,15 +18,14 @@ namespace AutomationPractice.Tests
         {
             Driver = new ChromeDriver(@"C:/Users/navas/source/repos/Tuta_Google/GoogleMainSearch/bin/Debug/");
             Wait = new WebDriverWait(Driver, new TimeSpan(0, 0, 5));
-
-            Driver.Manage().Window.Maximize();
         }
 
         [Test]
         public void Login_ThrowsError_IFInputIsInvalid()
         {
-            Steps.LogIn(Driver, Wait, "geader015.nn@gmail.com", "Luk555Nav");
-            Wait.Until(D => D.FindElement(By.ClassName("alert")));
+            Steps.GoToIndexPage(Driver, Wait);
+            Steps.GoFromIndexToLoginPage(Driver, Wait);
+            Steps.EnterInvalidLogInData(Driver, Wait);
 
             Assert.NotNull(Driver.FindElement(By.ClassName("alert")));
         }        
@@ -34,8 +33,7 @@ namespace AutomationPractice.Tests
         [Test]
         public void Login_SwitchesPage_IFInputIsValid()
         {
-            Steps.LogInWithValidData(Driver, Wait);
-            Wait.Until(D => D.FindElement(By.ClassName("page-heading")));
+            Steps.LogInSteps(Driver, Wait);
 
             Assert.AreEqual("MY ACCOUNT", Driver.FindElement(By.ClassName("page-heading")).Text);
         }
@@ -43,7 +41,7 @@ namespace AutomationPractice.Tests
         [TearDown]
         public void CloseDriver()
         {
-           // Driver.Close();
+            Driver.Close();
         }
     }
 }
